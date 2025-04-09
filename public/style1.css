@@ -1,0 +1,254 @@
+Main content styles
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    padding-bottom: 4rem;
+}
+
+#hero {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+#hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+#projects h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid #917c56; /* Add a border for better outline */
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhance the shadow on hover */
+}
+
+.project-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.project-card h3 {
+    font-size: 1.2rem;
+    margin: 1rem;
+}
+
+project-card small, b {
+    /* font-size: 1.2rem; */
+    margin: 1rem;
+}
+
+.project-card p {
+    margin: 0 1rem 1rem;
+}
+
+.funding-info {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+    margin-top: 0.5rem;
+}
+
+.progress-bar {
+    background-color: #e0e0e0; /* or var(--progress-bg) */
+    height: 10px;
+    margin: 10px 1rem; /* Adjusted margin to align properly */
+    border-radius: 5px;
+    overflow: hidden;
+    padding: 0; /* Remove padding to avoid shifting */
+}
+
+.progress {
+    background-color: #76c7c0; /* or var(--progress-fill) */
+    height: 100%;
+    border-radius: 5px; /* Match the border-radius of .progress-bar */
+}
+
+
+#footer {
+    background-color: var(--card-bg);
+    padding: 1rem 0;
+    text-align: left; /*! Align text to the left */
+    border-top: 1px solid var(--border-color);
+    position: relative;
+    width: 100%;
+    bottom: 0;
+}
+
+#footer .icons {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: left; /*! Align text to the left */
+    gap: 1rem;
+}
+
+#footer .icons li {
+    display: inline;
+}
+
+#footer .icons a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.5rem;
+}
+
+#footer .copyright {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    opacity: 0.7;
+}
+
+
+.navbar {
+    list-style: none;
+    padding: 0px;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+    gap: 1rem; /* Add space between items */
+    margin-top: -45px; /* Adjust this value to move the navbar upwards */
+}
+
+.navbar li {
+    display: inline;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--text-color); /* Use your preferred color */
+    padding: 0.5rem 1rem; /* Add padding for better click area */
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: var(--hover-color); /* Use your preferred hover color */
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Distribute space between buttons */
+    align-items: center; /* Align items vertically in the center */
+    width: 100%; /* Ensure the container takes full width */
+}
+
+.projectbtn, .projectbtn2 {
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center text horizontally */
+    align-items: center; /* Center text vertically */
+    padding: 0.25rem 0.5rem; /* Reduce padding */
+    font-size: 13px; /* Reduce font size */
+    color: var(--btn-text);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-bottom: 0.7em;
+}
+
+.projectbtn {
+    margin-left: 10px; /* Ensure no extra margin on the left */
+}
+
+.projectbtn2 {
+    margin-left: auto; /* Push the second button to the right */
+    margin-right: 10px; /* Add margin on the right */
+}
+
+/* #upload-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+#uploadForm input[type="file"] {
+    margin: 1rem 0;
+} */
+
+/* #uploadForm button {
+    margin: 0 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+} */
+
+.custom-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+  }
+  
+  .upload-label {
+    background-color: #00b894;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  
+  .upload-label:hover {
+    background-color: #019875;
+  }
+  
+  #file-name {
+    color: #ddd;
+    font-size: 0.95rem;
+  }
+  
+  .upload-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  
+  .submit-btn,
+  .reset-btn {
+    background-color: #00b894;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+  }
+  
+  .reset-btn {
+    background-color: #d63031;
+  }
+  
+  .submit-btn:hover {
+    background-color: #019875;
+  }
+  
+  .reset-btn:hover {
+    background-color: #c0392b;
+  }
+  

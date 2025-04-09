@@ -2,7 +2,8 @@ require('dotenv').config() //? For .env file
 const fs = require('fs');
 const https = require('https');
 const express = require("express");
-const mongoose = require('mongoose'); // DataBase
+const path = require('path');
+// const mongoose = require('mongoose'); // DataBase
 // const cors = require('cors'); //? frontend acess to API
 const multer  = require('multer') //? Process client file uploads
 const storage = multer.diskStorage({
@@ -34,7 +35,7 @@ const app = express();
 // };
 
 //? Mongo URL from dotenv
-const MONGO_URL = process.env.MONGO_URL;
+// const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 3000
 
 
@@ -43,6 +44,12 @@ app.use(express.json());
 
 //? Allow Form URL Encoded. To Pass Values to update DB
 app.use(express.urlencoded({extended: false}));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 
 // app.use(cors())
 // app.use(errorMiddleware)
@@ -58,18 +65,40 @@ app.post('/api/upload', upload.single('file') , (req, res)=> {
     res.json(req.file)
 })
 
+app.get('/', (req, res)=> {
+
+    // res.status(200).json("Hi")
+    res.status(200).sendFile(path.join(__dirname, 'public', 'wallet.html'));
+})
+
+app.get('/home', (req, res)=> {
+
+    res.status(200).sendFile(path.join(__dirname, 'public', 'home.html'));
+})
+
+app.get('/uploadfile', (req, res)=> {
+
+    res.status(200).sendFile(path.join(__dirname, 'public', 'uploadfile.html'));
+})
+
 
 //? Connection to PORT & DB
-mongoose.connect(MONGO_URL)
-.then(()=> {
-    console.log('Connected to MongoDB');
+// mongoose.connect(MONGO_URL)
+// .then(()=> {
+//     console.log('Connected to MongoDB');
 
-    app.listen(PORT, (()=> {
-        console.log("Node App is running at PORT:", PORT);
-    }))
-}).catch((error)=> {
-    console.log(error);
-})
+//     app.listen(PORT, (()=> {
+//         console.log("Node App is running at PORT:", PORT);
+//     }))
+// }).catch((error)=> {
+//     console.log(error);
+// })
+
+// Start the server
+app.listen(3000, () => {
+    console.log('Server is running on http://localhost:3000');
+});
+
 
 //! Start the HTTPS server
 // mongoose.connect(MONGO_URL)

@@ -1,0 +1,32 @@
+Basic HTTP Request Types (Methods)
+GET
+
+Used to request data from a server.
+
+Example: Loading a webpage.
+
+No body, just sends data via URL.
+
+example.com/products?id=5
+
+POST
+
+Used to send data to a server.
+
+Often used when submitting forms (e.g., login).
+
+Sends data in the body of the request.
+
+PUT
+
+Used to update existing data on the server.
+
+Replaces the entire resource.
+
+PATCH
+
+Used to update part of a resource.
+
+DELETE
+
+Used to delete a resource from the server.

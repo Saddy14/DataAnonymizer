@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Anonymizer | Upload File</title>
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="style1.css">
+    <link rel="shortcut icon" href="../images/icon.png" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header" style="margin-top: -5%;">
+        <!-- Navigation Links -->
+        <ul class="navbar">
+            <li><a href="/home">Home</a></li>
+            <li><a href="/uploadfile">Upload File</a></li>
+            <li><a href="/transaction">Transactions</a></li>
+            <li><a href="/blocks">Blocks</a></li>
+        </ul>
+
+        <h2>Research Data Anonymizer</h2>
+        <p style="margin-top: -2%;">With Blockchain Technology</p>
+        <!-- <p>Lorem ipsum dolor sit ametLorem ipsum dolor sit amet</p> -->
+
+    </header>
+    <main>
+        <section id="hero">
+            <h2 style="padding-top: 5%;">Discover and fund innovative ideas that shape the future.</h2>
+            <p>Note: Only CSV files is allowed</p>
+        </section>
+
+        <section id="upload-section" style="text-align: center; padding: 2rem" ;>
+            <h2>Upload Your File</h2>
+            
+            <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="custom-file-upload">
+                    <label for="datafile" class="upload-label">Choose File</label>
+                    <span id="file-name">No file chosen</span>
+                    <input type="file" name="datafile" id="datafile" accept=".csv" hidden required>
+                </div>
+
+                <div class="upload-buttons">
+                    <button type="submit" class="submit-btn">Upload File</button>
+                    <button type="reset" class="reset-btn">Reset</button>
+                </div>
+            </form>
+
+        </section>
+
+
+    </main>
+
+    <!-- Footer -->
+    <!-- <footer id="footer" style="counter-reset: none; padding: auto;">
+				<ul class="icons">
+					
+					<li><a href="https://github.com/Saddy14" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+				</ul>
+				<ul class="copyright">
+					<li>&copy; Saddy14</li><li>Credits: <a href="https://github.com/Saddy14">Sadman Zulfiquer</a></li>
+				</ul>
+			</footer> -->
+
+    <!-- Scripts -->
+    <script src="../assets/js/main.js"></script>
+    <!-- <script src="home.js"></script> -->
+    <script>
+        const fileInput = document.getElementById('datafile');
+        const fileNameSpan = document.getElementById('file-name');
+        const form = document.getElementById('uploadForm');
+
+        fileInput.addEventListener('change', function () {
+            const fileName = this.files[0]?.name || 'No file chosen';
+            fileNameSpan.textContent = fileName;
+        });
+
+        form.addEventListener('reset', function () {
+            // Wait a moment for the reset to apply
+            setTimeout(() => {
+                fileNameSpan.textContent = 'No file chosen';
+            }, 0);
+        });
+    </script>
+
+
+
+</body>
+
+</html>

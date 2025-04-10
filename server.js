@@ -4,15 +4,15 @@ const https = require('https');
 const express = require("express");
 const path = require('path');
 // const mongoose = require('mongoose'); // DataBase
-// const cors = require('cors'); //? frontend acess to API
+const cors = require('cors'); //? frontend acess to API
 const multer  = require('multer') //? Process client file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads')
     },
     filename: function (req, file, cb) {
-        //   const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, file.originalname)
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null, uniqueSuffix + file.originalname)
     }
 })
 const upload = multer({ storage: storage }) //? ^
@@ -51,7 +51,7 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
 
-// app.use(cors())
+app.use(cors())
 // app.use(errorMiddleware)
 
 //! Routes
@@ -60,9 +60,9 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 
 app.post('/api/upload', upload.single('file') , (req, res)=> {
     
-    // console.log(req.headers['content-type']);
-    // res.send("File Upload Successfully")
-    res.json(req.file)
+    console.log(req.headers['content-type']);
+    res.send("File Upload Successfully")
+    // res.json(req.file)
 })
 
 app.get('/', (req, res)=> {

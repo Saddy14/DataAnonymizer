@@ -35,11 +35,11 @@
         <section id="upload-section" style="text-align: center; padding: 2rem" ;>
             <h2>Upload Your File</h2>
             
-            <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data">
+            <form id="uploadForm" action="/api/upload" method="POST" enctype="multipart/form-data">
                 <div class="custom-file-upload">
                     <label for="datafile" class="upload-label">Choose File</label>
                     <span id="file-name">No file chosen</span>
-                    <input type="file" name="datafile" id="datafile" accept=".csv" hidden required>
+                    <input type="file" name="file" id="datafile" hidden required>
                 </div>
 
                 <div class="upload-buttons">

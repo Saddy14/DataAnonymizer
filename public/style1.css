@@ -1,10 +1,25 @@
-Main content styles
-main {
+Main content styles main {
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
     padding-bottom: 4rem;
+    /* Add bottom padding to avoid overlap with footer */
+
 }
+
+#header {
+    padding-top: 2%;
+    margin-top: 11%;
+    /* position: fixed; */
+}
+
+body {
+    /* margin: 0; */
+    /* padding: 0; */
+    /* overflow-x: hidden; */
+
+}
+
 
 #hero {
     text-align: center;
@@ -33,12 +48,14 @@ main {
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, background-color 0.3s ease;
-    border: 1px solid #917c56; /* Add a border for better outline */
+    border: 1px solid #917c56;
+    /* Add a border for better outline */
 }
 
 .project-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Enhance the shadow on hover */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    /* Enhance the shadow on hover */
 }
 
 .project-card img {
@@ -52,7 +69,8 @@ main {
     margin: 1rem;
 }
 
-project-card small, b {
+project-card small,
+b {
     /* font-size: 1.2rem; */
     margin: 1rem;
 }
@@ -69,25 +87,31 @@ project-card small, b {
 }
 
 .progress-bar {
-    background-color: #e0e0e0; /* or var(--progress-bg) */
+    background-color: #e0e0e0;
+    /* or var(--progress-bg) */
     height: 10px;
-    margin: 10px 1rem; /* Adjusted margin to align properly */
+    margin: 10px 1rem;
+    /* Adjusted margin to align properly */
     border-radius: 5px;
     overflow: hidden;
-    padding: 0; /* Remove padding to avoid shifting */
+    padding: 0;
+    /* Remove padding to avoid shifting */
 }
 
 .progress {
-    background-color: #76c7c0; /* or var(--progress-fill) */
+    background-color: #76c7c0;
+    /* or var(--progress-fill) */
     height: 100%;
-    border-radius: 5px; /* Match the border-radius of .progress-bar */
+    border-radius: 5px;
+    /* Match the border-radius of .progress-bar */
 }
 
 
 #footer {
     background-color: var(--card-bg);
     padding: 1rem 0;
-    text-align: left; /*! Align text to the left */
+    text-align: left;
+    /*! Align text to the left */
     border-top: 1px solid var(--border-color);
     position: relative;
     width: 100%;
@@ -99,7 +123,8 @@ project-card small, b {
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: left; /*! Align text to the left */
+    justify-content: left;
+    /*! Align text to the left */
     gap: 1rem;
 }
 
@@ -123,44 +148,79 @@ project-card small, b {
 }
 
 
+/* Make sure the navbar is flex so dropdown can align nicely */
 .navbar {
+    display: flex;
+    position: absolute;
+    /* <-- was absolute */
+    top: 20px;
+    right: 20px;
     list-style: none;
-    padding: 0px;
+    padding: 0;
     margin: 0;
-    display: flex;
-    justify-content: flex-end; /* Align items to the right */
-    gap: 1rem; /* Add space between items */
-    margin-top: -45px; /* Adjust this value to move the navbar upwards */
+    gap: 1rem;
+    z-index: 999;
+    /* Ensure it's above everything */
 }
 
-.navbar li {
-    display: inline;
+
+/* Dropdown container */
+.navbar .dropdown {
+    position: relative;
+    display: inline-block;
 }
 
-.navbar a {
+/* Dropdown content (hidden by default) */
+.navbar .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--card-bg);
+    min-width: 160px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 0;
+}
+
+/* Style each dropdown item */
+.navbar .dropdown-content li {
+    display: block;
+}
+
+.navbar .dropdown-content li a {
+    display: block;
+    padding: 10px 16px;
     text-decoration: none;
-    color: var(--text-color); /* Use your preferred color */
-    padding: 0.5rem 1rem; /* Add padding for better click area */
-    transition: color 0.3s ease;
+    color: var(--text-color);
+    transition: background-color 0.3s;
 }
 
-.navbar a:hover {
-    color: var(--hover-color); /* Use your preferred hover color */
+.navbar .dropdown-content li a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    color: var(--hover-color);
 }
 
-.button-container {
+/* Show dropdown on hover */
+.navbar .dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+.projectbtn,
+.projectbtn2 {
     display: flex;
-    justify-content: space-between; /* Distribute space between buttons */
-    align-items: center; /* Align items vertically in the center */
-    width: 100%; /* Ensure the container takes full width */
-}
-
-.projectbtn, .projectbtn2 {
-    display: flex; /* Use flexbox */
-    justify-content: center; /* Center text horizontally */
-    align-items: center; /* Center text vertically */
-    padding: 0.25rem 0.5rem; /* Reduce padding */
-    font-size: 13px; /* Reduce font size */
+    /* Use flexbox */
+    justify-content: center;
+    /* Center text horizontally */
+    align-items: center;
+    /* Center text vertically */
+    padding: 0.25rem 0.5rem;
+    /* Reduce padding */
+    font-size: 13px;
+    /* Reduce font size */
     color: var(--btn-text);
     border: none;
     border-radius: 10px;
@@ -170,28 +230,17 @@ project-card small, b {
 }
 
 .projectbtn {
-    margin-left: 10px; /* Ensure no extra margin on the left */
+    margin-left: 10px;
+    /* Ensure no extra margin on the left */
 }
 
 .projectbtn2 {
-    margin-left: auto; /* Push the second button to the right */
-    margin-right: 10px; /* Add margin on the right */
+    margin-left: auto;
+    /* Push the second button to the right */
+    margin-right: 10px;
+    /* Add margin on the right */
 }
 
-/* #upload-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-}
-
-#uploadForm input[type="file"] {
-    margin: 1rem 0;
-} */
-
-/* #uploadForm button {
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-} */
 
 .custom-file-upload {
     display: flex;
@@ -200,9 +249,9 @@ project-card small, b {
     gap: 1rem;
     margin: 1rem 0;
     flex-wrap: wrap;
-  }
-  
-  .upload-label {
+}
+
+.upload-label {
     background-color: #00b894;
     color: white;
     padding: 0.5rem 1rem;
@@ -210,26 +259,26 @@ project-card small, b {
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease;
-  }
-  
-  .upload-label:hover {
+}
+
+.upload-label:hover {
     background-color: #019875;
-  }
-  
-  #file-name {
+}
+
+#file-name {
     color: #ddd;
     font-size: 0.95rem;
-  }
-  
-  .upload-buttons {
+}
+
+.upload-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
     margin-top: 1rem;
-  }
-  
-  .submit-btn,
-  .reset-btn {
+}
+
+.submit-btn,
+.reset-btn {
     background-color: #00b894;
     color: white;
     border: none;
@@ -238,17 +287,16 @@ project-card small, b {
     cursor: pointer;
     font-weight: 600;
     transition: background-color 0.3s ease;
-  }
-  
-  .reset-btn {
+}
+
+.reset-btn {
     background-color: #d63031;
-  }
-  
-  .submit-btn:hover {
+}
+
+.submit-btn:hover {
     background-color: #019875;
-  }
-  
-  .reset-btn:hover {
+}
+
+.reset-btn:hover {
     background-color: #c0392b;
-  }
-  
+}

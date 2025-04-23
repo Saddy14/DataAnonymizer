@@ -6,7 +6,7 @@
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed;
     border-radius: 8px;
-    z-index: 1; /* Stay on top */
+    z-index: 10; /* Stay on top */
     top: 20px;            /* Adjust as needed */
     right: 20px;
     background-color: #111; /* Black*/
@@ -25,6 +25,7 @@
     color: #818181;
     display: block;
     transition: 0.3s;
+    z-index: 15;
   }
   
   /* When you mouse over the navigation links, change their color */
@@ -39,7 +40,7 @@
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
-    z-index: 3; /* Stay on top */
+    z-index: 10; /* Stay on top */
   }
   
   /* Style the button that is used to open the sidepanel */
@@ -56,11 +57,13 @@
     padding: 10px 15px;
     padding-top: 1px;
     border: none;
+    z-index: 10;
     
   }
   
   .openbtn:hover {
     background-color: #444;
+    z-index: 15;
   } 
 
  
@@ -81,6 +84,7 @@
   /* Dropdown button on hover & focus */
   .dropbtn:hover, .dropbtn:focus {
     background-color: #2980B9;
+    z-index: 15;
   }
   
   /* The container <div> - needed to position the dropdown content */
@@ -96,7 +100,7 @@
     background-color: #f1f1f1;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
+    z-index: 15;
   }
   
   /* Links inside the dropdown */
@@ -105,10 +109,24 @@
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    z-index: 15;
   }
   
   /* Change color of dropdown links on hover */
-  .dropdown-content a:hover {background-color: #ddd;}
+  .dropdown-content a:hover {
+    background-color: #ddd;
+    z-index: 15;
+  }
   
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;} 
+  .show {
+    display:block;
+    z-index: 15;
+  } 
+
+  /* Show the dropdown menu when hovering over the dropdown container */
+.dropdown:hover .dropdown-content {
+  display: block;
+  z-index: 15;
+}
+

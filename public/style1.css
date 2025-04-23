@@ -11,6 +11,7 @@ Main content styles main {
     padding-top: 2%;
     margin-top: 11%;
     /* position: fixed; */
+    z-index: 5;
 }
 
 body {
@@ -180,13 +181,15 @@ b {
     min-width: 160px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: 10;
+    z-index: 1000;
     padding: 0;
+    top: calc(100% - 2px);
 }
 
 /* Style each dropdown item */
 .navbar .dropdown-content li {
     display: block;
+    z-index: 999;
 }
 
 .navbar .dropdown-content li a {
@@ -195,17 +198,20 @@ b {
     text-decoration: none;
     color: var(--text-color);
     transition: background-color 0.3s;
+    z-index: 999;
 }
 
 .navbar .dropdown-content li a:hover {
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 6px;
     color: var(--hover-color);
+    /* z-index: 999; */
 }
 
 /* Show dropdown on hover */
 .navbar .dropdown:hover .dropdown-content {
     display: block;
+    /* z-index: 999; */
 }
 
 

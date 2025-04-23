@@ -3,3 +3,4 @@ NODE_MODULES
 assets
 uploads
 index.js
+*.py

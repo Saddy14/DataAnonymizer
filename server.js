@@ -4,6 +4,7 @@ const https = require('https');
 const express = require("express");
 const path = require('path');
 // const mongoose = require('mongoose'); // DataBase
+import { PinataSDK } from "pinata"; // For Storage / DB
 const cors = require('cors'); //? frontend acess to API
 const multer  = require('multer') //? Process client file uploads
 const storage = multer.diskStorage({
@@ -16,6 +17,11 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage: storage }) //? ^
+
+const pinata = new PinataSDK({
+  pinataJwt: process.env.JWT,
+  pinataGateway: process.env.GATEWAY,
+});
 
 //? routes import from here
 // const productRoute = require('./routes/productRoute');

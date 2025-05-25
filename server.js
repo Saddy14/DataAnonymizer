@@ -1,10 +1,10 @@
 require('dotenv').config() //? For .env file
 const fs = require('fs');
-const https = require('https');
+// const https = require('https');
 const express = require("express");
 const path = require('path');
 // const mongoose = require('mongoose'); // DataBase
-import { PinataSDK } from "pinata"; // For Storage / DB
+const { PinataSDK } = require('pinata'); // For Storage / DB
 const cors = require('cors'); //? frontend acess to API
 const multer  = require('multer') //? Process client file uploads
 const storage = multer.diskStorage({

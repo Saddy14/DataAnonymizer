@@ -55,12 +55,18 @@
         <section id="upload-section" style="text-align: center; padding: 2rem" ;>
             <h2>Upload Your File</h2>
             
-            <form id="uploadForm" action="/api/upload" method="POST" enctype="multipart/form-data">
+            <form id="uploadForm" enctype="multipart/form-data">
                 <div class="custom-file-upload">
                     <label for="datafile" class="upload-label">Choose File</label>
                     <span id="file-name">No file chosen</span>
-                    <input type="file" name="file" id="datafile" hidden required>
+                    <input type="file" name="file" id="datafile" hidden required accept=".csv">
                 </div>
+
+                <h2>Encrypt File</h2>
+                <input type="radio" id="Yes" name="fav_language" value="Yes">
+                <label for="Yes">Yes</label>
+                <input type="radio" id="No" name="fav_language" value="No" checked="checked">
+                <label for="No">No</label><br>
 
                 <div class="upload-buttons">
                     <button type="submit" class="submit-btn">Upload File</button>
@@ -87,6 +93,7 @@
     <!-- Scripts -->
     <script src="../assets/js/main.js"></script>
     <script src="sidepanel.js"></script>
+    <script src="uploadFile.js"></script>
     <script>
         const fileInput = document.getElementById('datafile');
         const fileNameSpan = document.getElementById('file-name');

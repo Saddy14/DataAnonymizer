@@ -1,5 +1,6 @@
 require('dotenv').config() //? For .env file
 const fs = require('fs');
+const { spawn } = require('child_process');
 // const https = require('https');
 const express = require("express");
 const path = require('path');
@@ -12,8 +13,8 @@ const storage = multer.diskStorage({
         cb(null, './uploads')
     },
     filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, uniqueSuffix + file.originalname)
+        // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+        cb(null,  Date.now() + '--' + file.originalname)
     }
 })
 const upload = multer({ storage: storage }) //? ^
@@ -64,12 +65,56 @@ app.use(cors())
 
 // app.use('/api/product', productRoute);
 
-app.post('/api/upload', upload.single('file') , (req, res)=> {
+// app.post('/api/upload', upload.single('file') , (req, res)=> {
     
-    console.log(req.headers['content-type']);
-    res.send("File Upload Successfully")
-    // res.json(req.file)
-})
+//     console.log(req.headers['content-type']);
+//     console.log(req.file);
+    // res.send("File Upload Successfully")
+//     console.log(req.file.filename);
+//     // res.json(req.file)
+
+//     const inputPath = path.join(__dirname, 'uploads', req.file.filename);
+//     const outputPath = path.join(__dirname, 'outputs', `output_${req.file.filename}`);
+
+// })
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+
+    const inputPath = path.join(__dirname, 'uploads', req.file.filename);
+    const outputPath = path.join(__dirname, 'output', req.body.pk + '--' + `${req.file.filename}`); // Expected saved output
+
+    console.log(inputPath);
+    console.log(outputPath);
+    console.log(req.body.pk);
+
+    const python = spawn('python', ['./python/algo.py', inputPath, outputPath]);
+
+    python.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    python.on('close', (code) => {
+        console.log(`Python exited with code ${code}`);
+
+        // Check if output file exists
+        if (fs.existsSync(outputPath)) {
+            //delete the input file after processing
+            fs.unlink(inputPath, (err) => {
+                if (err) {
+                    console.error(`Error deleting input file: ${err}`);
+                } else {
+                    console.log('Input file deleted successfully');
+                }
+            });
+            // res.("File output Success")
+            res.json({ "message": "Upload successful", "status": "ok" })
+        } else {
+            res.status(500).send("Processing failed or output not generated.");
+        }
+    });
+
+
+});
 
 app.get('/', (req, res)=> {
 

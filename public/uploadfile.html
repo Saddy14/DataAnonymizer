@@ -13,7 +13,7 @@
 
 <body>
     <!-- Header -->
-    <header id="header" style="margin-top: -5%;">
+    <header id="header" style="margin-top: auto;">
         <!-- Navigation Links -->
         <ul class="navbar">
             <li><a href="/home">Home</a></li>
@@ -32,24 +32,15 @@
             </li>
         </ul>
 
-        <h2>Research Data Anonymizer</h2>
-        <p style="margin-top: -2%;">With Blockchain Technology</p>
-<!--         
-        <div id="mySidepanel" class="sidepanel">
-            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Clients</a>
-            <a href="#">Contact</a>
-        </div> -->
-    
-        <!-- <button class="openbtn" onclick="openNav()">&#9776;</button> -->
+        <h2 style="margin: 0%;">Research Data Anonymizer</h2>
+        <p style="margin: 0%;">With Blockchain Technology</p>
+
 
     </header>
     <main>
         <section id="hero">
-            <h2 style="padding-top: 5%;">Discover and fund innovative ideas that shape the future.</h2>
-            <p>Note: Only CSV files is allowed</p>
+            <h2 >Discover and fund innovative ideas that shape the future.</h2>
+            <p style="margin-bottom: 0%;">Note: Only CSV files is allowed</p>
         </section>
 
         <section id="upload-section" style="text-align: center; padding: 2rem" ;>
@@ -60,13 +51,22 @@
                     <label for="datafile" class="upload-label">Choose File</label>
                     <span id="file-name">No file chosen</span>
                     <input type="file" name="file" id="datafile" hidden required accept=".csv">
+                    
+
                 </div>
 
-                <h2>Encrypt File</h2>
-                <input type="radio" id="Yes" name="fav_language" value="Yes">
-                <label for="Yes">Yes</label>
-                <input type="radio" id="No" name="fav_language" value="No" checked="checked">
-                <label for="No">No</label><br>
+                <div class="encrypt-options">
+                    <h2>Encrypt File</h2>
+                    <input type="radio" id="Yes" name="yesorno" value="1">
+                    <label for="Yes">Yes</label>
+                    <input type="radio" id="No" name="yesorno" value="0" checked>
+                    <label for="No">No</label><br>
+                    
+                    <span>Public Key</span>
+                    <input type="text" id="pKey" placeholder="Your RSA Public Key"> <br>
+                </div>
+
+
 
                 <div class="upload-buttons">
                     <button type="submit" class="submit-btn">Upload File</button>
@@ -80,7 +80,7 @@
     </main>
 
     <!-- Footer -->
-    <!-- <footer id="footer" style="counter-reset: none; padding: auto;">
+    <footer id="footer" style="counter-reset: none; padding: auto;">
 				<ul class="icons">
 					
 					<li><a href="https://github.com/Saddy14" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
@@ -88,7 +88,7 @@
 				<ul class="copyright">
 					<li>&copy; Saddy14</li><li>Credits: <a href="https://github.com/Saddy14">Sadman Zulfiquer</a></li>
 				</ul>
-			</footer> -->
+			</footer>
 
     <!-- Scripts -->
     <script src="../assets/js/main.js"></script>

@@ -39,15 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const walletAddress = accounts[0];
 
         const formData = new FormData();
-        // const file = fileInput.files[0];
 
-        // if (!file) {
-        //     alert("Please choose a file.");
-        //     return;
-        // }
+        const selected = document.querySelector('input[name="yesorno"]:checked');
+        const encryptFile = selected.value;
+        console.log('EncryptFile: '+encryptFile);
+
+        const pKey = document.getElementById('pKey').value;
+        console.log('Public Key: ' + pKey);
+
+        
 
         formData.append('file', file);
-        formData.append('pk', walletAddress); // wallet public key
+        formData.append('walletPK', walletAddress); // wallet public key
+        formData.append('encryptFile', encryptFile); // encryption option
+        formData.append('pKey', pKey); // public key for encryption
 
         try {
             const response = await fetch('/api/upload', {

@@ -121,11 +121,11 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
             if (encryptFile === '1') {
                 // Call the encryption function here
                 console.log('Encryption is required');
-                // or use a Node.js library for encryption.
+                
                 const filePath = outputPath; // anonymized file
-                const encryptedFilePath = path.join(__dirname, 'encryptedFile', 'encryted_output.enc'); // encrypted file path
-                const encryptedKeyPath = path.join(__dirname, 'output', 'encrypted_key.bin'); // path to save encrypted key
-                const ivPath = path.join(__dirname, 'output', 'iv.bin'); // path to save IV
+                const encryptedFilePath = path.join(__dirname, 'encryptedFile', 'encrypted_output.enc'); // encrypted file path
+                const encryptedKeyPath = path.join(__dirname, 'encryptedFile', 'encrypted_aes_key.bin'); // path to save encrypted key
+                const ivPath = path.join(__dirname, 'encryptedFile', 'iv.bin'); // path to save IV
 
                 const aesKey = crypto.randomBytes(32); // 256-bit AES key
                 const iv = crypto.randomBytes(16);     // Initialization vector
@@ -140,7 +140,9 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
                     try {
                         // Convert public key and encrypt AES key using RSA
                         const pubKey = forge.pki.publicKeyFromPem(pKey);
-                        const encrypted = pubKey.encrypt(aesKey.toString('binary'), 'RSA-OAEP');
+                        // fs.writeFileSync("aes_key.bin", aesKey);
+
+                        const encrypted = pubKey.encrypt(aesKey.toString('binary'), 'RSAES-PKCS1-V1_5');
                         const encryptedKey = Buffer.from(encrypted, 'binary');
 
                         // Save encrypted key and IV

@@ -4,3 +4,5 @@ assets
 uploads
 index.js
 key
+decryption/*.pem
+python/unused

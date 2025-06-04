@@ -8,6 +8,7 @@ const express = require("express");
 const path = require('path');
 // const mongoose = require('mongoose'); // DataBase
 const { PinataSDK } = require('pinata'); // For Storage / DB
+const { Blob } = require("buffer") //for Buffer pinata
 const cors = require('cors'); //? frontend acess to API
 const multer = require('multer') //? Process client file uploads
 const storage = multer.diskStorage({
@@ -43,9 +44,6 @@ const app = express();
 //     passphrase: 'hello'
 // };
 
-//? Mongo URL from dotenv
-// const MONGO_URL = process.env.MONGO_URL;
-const PORT = process.env.PORT || 3000
 
 
 //? Allow JSON data type for APP
@@ -87,9 +85,12 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     const walletPK = req.body.walletPK; // Get the wallet public key
     const encryptFile = req.body.encryptFile; // Get the encryption option
     const pKey = req.body.pKey; // Get the public key for encryption
-    const fileName = req.file.filename; // Get the original file name
+    // const fileName = req.file.filename.split('--')[1].replace('.csv', '');
+    const fileName = req.file.filename.replace('.csv', '');
 
-    console.log(req.body);
+    console.log(fileName); // "MOCK_DATA1"
+
+    // console.log(req.body);
     console.log(inputPath);
     console.log(outputPath);
     console.log('Wallet Address: ' + walletPK);
@@ -107,7 +108,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 
         // Check if output file exists
         if (fs.existsSync(outputPath)) {
-            //delete the input file after processing
+            //delete the input file after processing (uploads folder)
             fs.unlink(inputPath, (err) => {
                 if (err) {
                     console.error(`Error deleting input file: ${err}`);
@@ -121,9 +122,9 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
             if (encryptFile === '1') {
                 // Call the encryption function here
                 console.log('Encryption is required');
-                
+
                 const filePath = outputPath; // anonymized file
-                const encryptedFilePath = path.join(__dirname, 'encryptedFile', 'encrypted_output.enc'); // encrypted file path
+                const encryptedFilePath = path.join(__dirname, 'encryptedFile', `${fileName}.enc`); // encrypted file path
                 const encryptedKeyPath = path.join(__dirname, 'encryptedFile', 'encrypted_aes_key.bin'); // path to save encrypted key
                 const ivPath = path.join(__dirname, 'encryptedFile', 'iv.bin'); // path to save IV
 
@@ -135,6 +136,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
                 const output = fs.createWriteStream(encryptedFilePath);
 
                 input.pipe(cipher).pipe(output);
+
 
                 output.on('finish', () => {
                     try {
@@ -150,6 +152,11 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
                         fs.writeFileSync(ivPath, iv);
 
                         console.log('File encrypted and AES key secured.');
+                        console.log("encryptedKey" + encryptedKey);
+                        console.log("IV: " + iv);
+                        console.log("Uploading to Pinata...");
+                        // pinataUpload(encryptedKey, iv, fileName, encryptedFilePath)
+                        // uploadDirectory();
                     } catch (err) {
                         console.error('RSA encryption failed:', err.message);
                     }
@@ -185,6 +192,81 @@ app.get('/uploadfile', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, 'public', 'uploadfile.html'));
 })
 
+
+app.get('/api/pinata', async (req, res) => {
+
+    try {
+        const blob = new Blob([fs.readFileSync("./pew.txt")]);
+        const file = new File([blob], "pew.txt", { type: "text/plain" })
+        const result = await pinata.upload.private.file(file);
+        console.log(result)
+        res.status(200).json(result);
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// async function pinataUpload(encryptedKey, iv, fileName, encryptedFilePath) {
+
+//     console.log("encryptedFilePath: " + encryptedFilePath);
+//     console.log("fileName: " + fileName);
+
+//     try {
+//         const blob = new Blob([fs.readFileSync(encryptedFilePath)]);
+//         const file = new File([blob], `${fileName}.enc`, { type: "application/octet-stream" })
+//         const upload = await pinata.upload.private.file(file).name(fileName)
+
+//         const meta = await pinata.upload.private
+//         .json({
+//             EncryptedKey: encryptedKey.toString('base64'), // Convert Buffer to base64 string
+//             IV: iv.toString('base64'), // Convert Buffer to base64 string
+//             FileName: fileName // Include the file name
+//         })
+//         .name(`${fileName}-metadata`) // Set the name of the file in Pinata
+
+//         console.log(upload)
+//         return upload;
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+// async function pinataUpload(encryptedKey, iv, fileName, encryptedFilePath) {
+//     try {
+
+//         const blob = new Blob([fs.readFileSync(encryptedFilePath)]);
+//         const file = new File([blob], `${fileName}.enc`, { type: "application/octet-stream" })
+
+//         const form = new FormData();
+//         form.append("file", file);
+//         form.append("name", fileName);
+//         // form.append("group_id", "<string>");
+//         // form.append("keyvalues", "{}");
+
+//         const uploadReq = {
+//             method: 'POST',
+//             headers: { Authorization: `Bearer ${process.env.JWT}`, 'Content-Type': 'multipart/form-data' }
+//         };
+
+//         options.body = form;
+
+//         fetch('https://uploads.pinata.cloud/v3/files', options)
+//             .then(response => response.json())
+//             .then(response => console.log(response))
+//             .catch(err => console.error(err));
+
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+async function uploadDirectory() {
+
+    const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
+    const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
+    const upload = await pinata.upload.public
+        .fileArray([file1, file2])
+        .name("my-directory") // Set the name of the directory in Pinata
+}
 
 
 // Start the server

@@ -152,18 +152,21 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
                         fs.writeFileSync(ivPath, iv);
 
                         console.log('File encrypted and AES key secured.');
-                        console.log("encryptedKey" + encryptedKey);
-                        console.log("IV: " + iv);
+                        // console.log("encryptedKey: " + encryptedKey);
+                        // console.log("IV: " + iv);
                         console.log("Uploading to Pinata...");
-                        // pinataUpload(encryptedKey, iv, fileName, encryptedFilePath)
+                        pinataUploadEncrypted(encryptedKeyPath, ivPath, fileName, encryptedFilePath, walletPK)
+                        // deleteFilesEnrypted(); // Delete files after upload
                         // uploadDirectory();
                     } catch (err) {
                         console.error('RSA encryption failed:', err.message);
                     }
                 });
-
             } else {
                 console.log('No encryption required');
+
+                // pinataUpload(fileName, outputPath, walletPK)
+                // deleteFilesOutput(); // Delete files after upload
             }
 
 
@@ -192,6 +195,11 @@ app.get('/uploadfile', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, 'public', 'uploadfile.html'));
 })
 
+app.get('/processing', (req, res) => {
+
+    res.status(200).sendFile(path.join(__dirname, 'public', 'processing.html'));
+})
+
 
 app.get('/api/pinata', async (req, res) => {
 
@@ -206,59 +214,93 @@ app.get('/api/pinata', async (req, res) => {
     }
 })
 
-// async function pinataUpload(encryptedKey, iv, fileName, encryptedFilePath) {
+async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePath, walletPK) {
 
-//     console.log("encryptedFilePath: " + encryptedFilePath);
-//     console.log("fileName: " + fileName);
+    console.log("encryptedFilePath: " + encryptedFilePath);
+    console.log("fileName: " + fileName);
 
-//     try {
-//         const blob = new Blob([fs.readFileSync(encryptedFilePath)]);
-//         const file = new File([blob], `${fileName}.enc`, { type: "application/octet-stream" })
-//         const upload = await pinata.upload.private.file(file).name(fileName)
+    try {
+        const blob = new Blob([fs.readFileSync(encryptedFilePath)]);
+        const file = new File([blob], `${fileName}.enc`, { type: "application/octet-stream" })
 
-//         const meta = await pinata.upload.private
-//         .json({
-//             EncryptedKey: encryptedKey.toString('base64'), // Convert Buffer to base64 string
-//             IV: iv.toString('base64'), // Convert Buffer to base64 string
-//             FileName: fileName // Include the file name
-//         })
-//         .name(`${fileName}-metadata`) // Set the name of the file in Pinata
+        const encryptedKeyBlob = new Blob([fs.readFileSync(encryptedKey)], { type: "application/octet-stream" });
+        const ivBlob = new Blob([fs.readFileSync(iv)], { type: "application/octet-stream" });
 
-//         console.log(upload)
-//         return upload;
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+        const encryptedKeyFile = new File([encryptedKeyBlob], "encrypted_aes_key.bin", { type: "application/octet-stream" });
+        const ivFile = new File([ivBlob], "iv.bin", { type: "application/octet-stream" });
 
-// async function pinataUpload(encryptedKey, iv, fileName, encryptedFilePath) {
-//     try {
+        const upload = await pinata.upload.public.fileArray([file, encryptedKeyFile, ivFile])
+            .name(fileName) // Set the name of the folder in Pinata
+            .keyvalues({
+                "Wallet Address": `${walletPK}` // Example key-value pair
+            })
+        .then(response => {
+            console.log("Upload successful:", response);
+            deleteFilesEnrypted(); // Delete files after upload
+            // return response;
+        })
+        // console.log(upload)
+        // return upload;
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-//         const blob = new Blob([fs.readFileSync(encryptedFilePath)]);
-//         const file = new File([blob], `${fileName}.enc`, { type: "application/octet-stream" })
+async function pinataUpload(fileName, outputPath, walletPK) {
 
-//         const form = new FormData();
-//         form.append("file", file);
-//         form.append("name", fileName);
-//         // form.append("group_id", "<string>");
-//         // form.append("keyvalues", "{}");
+    console.log("fileName: " + fileName);
 
-//         const uploadReq = {
-//             method: 'POST',
-//             headers: { Authorization: `Bearer ${process.env.JWT}`, 'Content-Type': 'multipart/form-data' }
-//         };
+    try {
+        const blob = new Blob([fs.readFileSync(outputPath)]);
+        const file = new File([blob], `${fileName}.csv`, { type: "text/csv" })
 
-//         options.body = form;
+        const upload = await pinata.upload.public.fileArray([file])
+            .name(fileName) // Set the name of the folder in Pinata
+            .keyvalues({
+                "Wallet Address": `${walletPK}` // Example key-value pair
+            })
+        .then(response => {
+            console.log("Upload successful:", response);
+            deleteFilesOutput(); // Delete files after upload
+            // return response;
+        })
+        // console.log(upload)
+        // return upload;
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-//         fetch('https://uploads.pinata.cloud/v3/files', options)
-//             .then(response => response.json())
-//             .then(response => console.log(response))
-//             .catch(err => console.error(err));
+function deleteFilesEnrypted() {
 
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+    const directory = path.join(__dirname, 'encryptedFile');
+
+    fs.readdirSync(directory).forEach(file => {
+        const filePath = path.join(directory, file);
+        if (fs.statSync(filePath).isFile()) {
+            fs.unlinkSync(filePath);
+        }
+    });
+
+    console.log('All files deleted successfully from encryptedFile folder');
+}
+
+function deleteFilesOutput() {
+
+    const directory = path.join(__dirname, 'output');
+
+    fs.readdirSync(directory).forEach(file => {
+        const filePath = path.join(directory, file);
+        if (fs.statSync(filePath).isFile()) {
+            fs.unlinkSync(filePath);
+        }
+    });
+
+    console.log('All files deleted successfully from output folder');
+}
+
+
+
 async function uploadDirectory() {
 
     const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })

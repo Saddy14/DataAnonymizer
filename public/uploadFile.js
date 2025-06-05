@@ -63,6 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             console.log('Upload successful:', result);
             alert('File uploaded successfully!');
+
+            window.location.replace('/processing'); // Redirect to processing page
+            
         } catch (error) {
             console.error('Upload failed:', error);
         }

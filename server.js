@@ -88,14 +88,20 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     // const fileName = req.file.filename.split('--')[1].replace('.csv', '');
     const fileName = req.file.filename.replace('.csv', '');
 
-    console.log(fileName); // "MOCK_DATA1"
-
+    // console.log(fileName); // "MOCK_DATA1"
     // console.log(req.body);
-    console.log(inputPath);
-    console.log(outputPath);
-    console.log('Wallet Address: ' + walletPK);
-    console.log('EncryptFile: ' + encryptFile);
-    console.log('Public Key: ' + pKey);
+    // console.log(inputPath);
+    // console.log(outputPath);
+    // console.log('Wallet Address: ' + walletPK);
+    // console.log('EncryptFile: ' + encryptFile);
+    // console.log('Public Key: ' + pKey);
+
+
+    res.json({ "message": "Upload successful", "status": "ok", "fileName": fileName, "walletPK": walletPK, "encryptFile": encryptFile, "pKey": pKey, "inputPath": inputPath, "outputPath": outputPath });
+    return
+    // res.status(200).sendFile(path.join(__dirname, 'public', 'processing.html'));
+
+    // !-----------------------------------------------------------------------------------------!
 
     const python = spawn('python', ['./python/algo.py', inputPath, outputPath]);
 
@@ -179,6 +185,108 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 
 });
 
+app.post('/api/processing', (req, res) => {
+
+    // console.log(req.body);
+
+    const inputPath = req.body.inputPath; // Get the input file path
+    const outputPath = req.body.outputPath; // Get the output file path
+    const walletPK = req.body.walletPK; // Get the wallet public key
+    const encryptFile = req.body.encryptFile; // Get the encryption option
+    const pKey = req.body.pKey; // Get the public key for encryption
+    const fileName = req.body.fileName
+
+    console.log(fileName); // "MOCK_DATA1"
+    console.log(req.body);
+    console.log(inputPath);
+    console.log(outputPath);
+    console.log('Wallet Address: ' + walletPK);
+    console.log('EncryptFile: ' + encryptFile);
+    console.log('Public Key: ' + pKey);
+
+
+    const python = spawn('python', ['./python/algo.py', inputPath, outputPath]);
+
+    python.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+    });
+
+    python.on('close', (code) => {
+        console.log(`Python exited with code ${code}`);
+
+        // Check if output file exists
+        if (fs.existsSync(outputPath)) {
+            //delete the input file after processing (uploads folder)
+            fs.unlink(inputPath, (err) => {
+                if (err) {
+                    console.error(`Error deleting input file: ${err}`);
+                } else {
+                    console.log('Input file deleted successfully');
+                }
+            });
+            // res.("File output Success")
+            // res.json({ "message": "Upload successful", "status": "ok" })
+            // Check if encryption is required
+            if (encryptFile === '1') {
+                // Call the encryption function here
+                console.log('Encryption is required');
+
+                const filePath = outputPath; // anonymized file
+                const encryptedFilePath = path.join(__dirname, 'encryptedFile', `${fileName}.enc`); // encrypted file path
+                const encryptedKeyPath = path.join(__dirname, 'encryptedFile', 'encrypted_aes_key.bin'); // path to save encrypted key
+                const ivPath = path.join(__dirname, 'encryptedFile', 'iv.bin'); // path to save IV
+
+                const aesKey = crypto.randomBytes(32); // 256-bit AES key
+                const iv = crypto.randomBytes(16);     // Initialization vector
+
+                const cipher = crypto.createCipheriv('aes-256-cbc', aesKey, iv);
+                const input = fs.createReadStream(filePath);
+                const output = fs.createWriteStream(encryptedFilePath);
+
+                input.pipe(cipher).pipe(output);
+
+
+                output.on('finish', () => {
+                    try {
+                        // Convert public key and encrypt AES key using RSA
+                        const pubKey = forge.pki.publicKeyFromPem(pKey);
+                        // fs.writeFileSync("aes_key.bin", aesKey);
+
+                        const encrypted = pubKey.encrypt(aesKey.toString('binary'), 'RSAES-PKCS1-V1_5');
+                        const encryptedKey = Buffer.from(encrypted, 'binary');
+
+                        // Save encrypted key and IV
+                        fs.writeFileSync(encryptedKeyPath, encryptedKey);
+                        fs.writeFileSync(ivPath, iv);
+
+                        console.log('File encrypted and AES key secured.');
+                        // console.log("encryptedKey: " + encryptedKey);
+                        // console.log("IV: " + iv);
+                        console.log("Uploading to Pinata...");
+                        pinataUploadEncrypted(encryptedKeyPath, ivPath, fileName, encryptedFilePath, walletPK)
+                    } catch (err) {
+                        console.error('RSA encryption failed:', err.message);
+                    }
+                });
+            } else {
+                console.log('No encryption required');
+
+                // pinataUpload(fileName, outputPath, walletPK)
+                console.log("Uploading to Pinata...");
+            }
+
+
+
+        } else {
+            res.status(500).send("Processing failed or output not generated.");
+        }
+    });
+
+
+    res.status(200).json({ "message": "Processing successful" });
+
+})
+
 app.get('/', (req, res) => {
 
     // res.status(200).json("Hi")
@@ -234,11 +342,11 @@ async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePa
             .keyvalues({
                 "Wallet Address": `${walletPK}` // Example key-value pair
             })
-        .then(response => {
-            console.log("Upload successful:", response);
-            deleteFilesEnrypted(); // Delete files after upload
-            // return response;
-        })
+            .then(response => {
+                console.log("Upload successful:", response);
+                deleteFilesEnrypted(); // Delete files after upload
+                // return response;
+            })
         // console.log(upload)
         // return upload;
     } catch (error) {
@@ -259,11 +367,11 @@ async function pinataUpload(fileName, outputPath, walletPK) {
             .keyvalues({
                 "Wallet Address": `${walletPK}` // Example key-value pair
             })
-        .then(response => {
-            console.log("Upload successful:", response);
-            deleteFilesOutput(); // Delete files after upload
-            // return response;
-        })
+            .then(response => {
+                console.log("Upload successful:", response);
+                deleteFilesOutput(); // Delete files after upload
+                // return response;
+            })
         // console.log(upload)
         // return upload;
     } catch (error) {

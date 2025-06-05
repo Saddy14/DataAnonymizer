@@ -60,12 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: formData
             });
 
-            const result = await response.json();
-            console.log('Upload successful:', result);
+            const result = await response.json()
+            console.log('Upload Result:', result);
             alert('File uploaded successfully!');
-
+            localStorage.setItem('uploadResult', JSON.stringify(result));
             window.location.replace('/processing'); // Redirect to processing page
-            
+
         } catch (error) {
             console.error('Upload failed:', error);
         }

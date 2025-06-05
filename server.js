@@ -85,6 +85,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     const walletPK = req.body.walletPK; // Get the wallet public key
     const encryptFile = req.body.encryptFile; // Get the encryption option
     const pKey = req.body.pKey; // Get the public key for encryption
+    const desc = req.body.desc; // Get the description
     // const fileName = req.file.filename.split('--')[1].replace('.csv', '');
     const fileName = req.file.filename.replace('.csv', '');
 
@@ -97,7 +98,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     // console.log('Public Key: ' + pKey);
 
 
-    res.json({ "message": "Upload successful", "status": "ok", "fileName": fileName, "walletPK": walletPK, "encryptFile": encryptFile, "pKey": pKey, "inputPath": inputPath, "outputPath": outputPath });
+    res.json({ "message": "Upload successful", "status": "ok", "fileName": fileName, "walletPK": walletPK, "encryptFile": encryptFile, "pKey": pKey, "inputPath": inputPath, "outputPath": outputPath, "desc": desc });
     return
     // res.status(200).sendFile(path.join(__dirname, 'public', 'processing.html'));
 
@@ -194,6 +195,7 @@ app.post('/api/processing', (req, res) => {
     const walletPK = req.body.walletPK; // Get the wallet public key
     const encryptFile = req.body.encryptFile; // Get the encryption option
     const pKey = req.body.pKey; // Get the public key for encryption
+    const desc = req.body.desc; // Get the description
     const fileName = req.body.fileName
 
     console.log(fileName); // "MOCK_DATA1"
@@ -203,6 +205,7 @@ app.post('/api/processing', (req, res) => {
     console.log('Wallet Address: ' + walletPK);
     console.log('EncryptFile: ' + encryptFile);
     console.log('Public Key: ' + pKey);
+    console.log("Description: " + desc);
 
 
     const python = spawn('python', ['./python/algo.py', inputPath, outputPath]);
@@ -263,7 +266,7 @@ app.post('/api/processing', (req, res) => {
                         // console.log("encryptedKey: " + encryptedKey);
                         // console.log("IV: " + iv);
                         console.log("Uploading to Pinata...");
-                        pinataUploadEncrypted(encryptedKeyPath, ivPath, fileName, encryptedFilePath, walletPK)
+                        pinataUploadEncrypted(encryptedKeyPath, ivPath, fileName, encryptedFilePath, walletPK, desc)
                     } catch (err) {
                         console.error('RSA encryption failed:', err.message);
                     }
@@ -271,7 +274,7 @@ app.post('/api/processing', (req, res) => {
             } else {
                 console.log('No encryption required');
 
-                // pinataUpload(fileName, outputPath, walletPK)
+                pinataUpload(fileName, outputPath, walletPK, desc)
                 console.log("Uploading to Pinata...");
             }
 
@@ -322,7 +325,19 @@ app.get('/api/pinata', async (req, res) => {
     }
 })
 
-async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePath, walletPK) {
+app.get('/api/pinataFiles', async (req, res) => {
+
+    try {
+        const files = await pinata.files.public.list()
+        res.status(200).send(files);
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Failed to fetch files from Pinata' });
+    }
+})
+
+async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePath, walletPK, desc) {
 
     console.log("encryptedFilePath: " + encryptedFilePath);
     console.log("fileName: " + fileName);
@@ -340,7 +355,10 @@ async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePa
         const upload = await pinata.upload.public.fileArray([file, encryptedKeyFile, ivFile])
             .name(fileName) // Set the name of the folder in Pinata
             .keyvalues({
-                "Wallet Address": `${walletPK}` // Example key-value pair
+                "WalletAddress": `${walletPK}`, // Example key-value pair
+                "Description": `${desc}`, // Add description to metadata
+                "EncryptedFile": "1", // Indicate that this is an encrypted file
+                "PublicView": "1" // Indicate that if this file is publicly viewable
             })
             .then(response => {
                 console.log("Upload successful:", response);
@@ -354,7 +372,7 @@ async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePa
     }
 }
 
-async function pinataUpload(fileName, outputPath, walletPK) {
+async function pinataUpload(fileName, outputPath, walletPK, desc) {
 
     console.log("fileName: " + fileName);
 
@@ -365,7 +383,10 @@ async function pinataUpload(fileName, outputPath, walletPK) {
         const upload = await pinata.upload.public.fileArray([file])
             .name(fileName) // Set the name of the folder in Pinata
             .keyvalues({
-                "Wallet Address": `${walletPK}` // Example key-value pair
+                "WalletAddress": `${walletPK}`, // Example key-value pair
+                "Description": `${desc}`, // Add description to metadata
+                "EncryptedFile": "0", // Indicate that this is not an encrypted file
+                "PublicView": "1" // Indicate that if this file is publicly viewable
             })
             .then(response => {
                 console.log("Upload successful:", response);
@@ -407,10 +428,8 @@ function deleteFilesOutput() {
     console.log('All files deleted successfully from output folder');
 }
 
-
-
+// not used just to test
 async function uploadDirectory() {
-
     const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
     const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
     const upload = await pinata.upload.public

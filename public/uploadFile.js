@@ -47,12 +47,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const pKey = document.getElementById('pKey').value;
         console.log('Public Key: ' + pKey);
 
+        const desc = document.getElementById('desc').value;
+        console.log('Description: ' + desc);
+
         
 
-        formData.append('file', file);
-        formData.append('walletPK', walletAddress); // wallet public key
+        formData.append('file', file); //file
+        formData.append('walletPK', walletAddress); // wallet address
         formData.append('encryptFile', encryptFile); // encryption option
         formData.append('pKey', pKey); // public key for encryption
+        formData.append('desc', desc); // description
 
         try {
             const response = await fetch('/api/upload', {

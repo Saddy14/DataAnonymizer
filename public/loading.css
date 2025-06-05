@@ -21,7 +21,8 @@
     width: 60px;
     height: 60px;
     border: 6px solid #ccc;
-    border-top: 6px solid #ffa702;
+    /* border-top: 6px solid #ffa702; */
+    border-top: 6px solid #3ae5ff;
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

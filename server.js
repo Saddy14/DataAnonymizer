@@ -186,7 +186,7 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
 
 });
 
-app.post('/api/processing', (req, res) => {
+app.post('/api/processing', async (req, res) => {
 
     // console.log(req.body);
 
@@ -214,7 +214,7 @@ app.post('/api/processing', (req, res) => {
         console.error(`stderr: ${data}`);
     });
 
-    python.on('close', (code) => {
+    python.on('close', async (code) => {
         console.log(`Python exited with code ${code}`);
 
         // Check if output file exists
@@ -231,6 +231,12 @@ app.post('/api/processing', (req, res) => {
             // res.json({ "message": "Upload successful", "status": "ok" })
             // Check if encryption is required
             if (encryptFile === '1') {
+
+                // if (!isRSA2048(pKey)) {
+                //     console.error("Invalid public key — must be RSA-2048.");
+                //     res.status(400).json({ error: "Provided public key must be RSA-2048." });
+                //     return;
+                // }
                 // Call the encryption function here
                 console.log('Encryption is required');
 
@@ -249,7 +255,7 @@ app.post('/api/processing', (req, res) => {
                 input.pipe(cipher).pipe(output);
 
 
-                output.on('finish', () => {
+                output.on('finish', async () => {
                     try {
                         // Convert public key and encrypt AES key using RSA
                         const pubKey = forge.pki.publicKeyFromPem(pKey);
@@ -265,8 +271,11 @@ app.post('/api/processing', (req, res) => {
                         console.log('File encrypted and AES key secured.');
                         // console.log("encryptedKey: " + encryptedKey);
                         // console.log("IV: " + iv);
+                        const result = await pinataUploadEncrypted(encryptedKeyPath, ivPath, fileName, encryptedFilePath, walletPK, desc)
                         console.log("Uploading to Pinata...");
-                        pinataUploadEncrypted(encryptedKeyPath, ivPath, fileName, encryptedFilePath, walletPK, desc)
+                        console.log(result);
+                        res.status(200).json(result);
+                        return
                     } catch (err) {
                         console.error('RSA encryption failed:', err.message);
                     }
@@ -274,8 +283,11 @@ app.post('/api/processing', (req, res) => {
             } else {
                 console.log('No encryption required');
 
-                pinataUpload(fileName, outputPath, walletPK, desc)
+                const result = await pinataUpload(fileName, outputPath, walletPK, desc)
                 console.log("Uploading to Pinata...");
+                console.log(result);
+                res.status(200).json(result);
+                return
             }
 
 
@@ -286,7 +298,7 @@ app.post('/api/processing', (req, res) => {
     });
 
 
-    res.status(200).json({ "message": "Processing successful" });
+    // res.status(200).json({ "message": "Processing successful" });
 
 })
 
@@ -330,7 +342,7 @@ app.get('/api/pinataFiles', async (req, res) => {
     try {
         const files = await pinata.files.public.list()
         res.status(200).send(files);
-        
+
     } catch (error) {
         console.log(error)
         res.status(500).json({ error: 'Failed to fetch files from Pinata' });
@@ -360,11 +372,11 @@ async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePa
                 "EncryptedFile": "1", // Indicate that this is an encrypted file
                 "PublicView": "1" // Indicate that if this file is publicly viewable
             })
-            .then(response => {
-                console.log("Upload successful:", response);
+            // .then(response => {
+                console.log("Upload successful:", upload);
                 deleteFilesEnrypted(); // Delete files after upload
-                // return response;
-            })
+                return upload;
+            // })
         // console.log(upload)
         // return upload;
     } catch (error) {
@@ -388,11 +400,12 @@ async function pinataUpload(fileName, outputPath, walletPK, desc) {
                 "EncryptedFile": "0", // Indicate that this is not an encrypted file
                 "PublicView": "1" // Indicate that if this file is publicly viewable
             })
-            .then(response => {
-                console.log("Upload successful:", response);
-                deleteFilesOutput(); // Delete files after upload
-                // return response;
-            })
+        // .then(response => {
+        console.log("Upload successful:", upload);
+        deleteFilesOutput(); // Delete files after upload
+        // console.log(object);
+        return upload;
+        // })
         // console.log(upload)
         // return upload;
     } catch (error) {

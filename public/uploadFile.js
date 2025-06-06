@@ -4,7 +4,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         if (accounts.length > 0) {
             console.log('Already connected:', accounts[0]);
         }
-        
+
     }
 });
 
@@ -21,10 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Please choose a file.");
             return;
         }
-    
+
         // Check file type
         const isCSV = file.name.toLowerCase().endsWith('.csv') || file.type === 'text/csv';
-    
+
         if (!isCSV) {
             alert("Only CSV files are allowed.");
             return;
@@ -40,17 +40,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const formData = new FormData();
 
-        const selected = document.querySelector('input[name="yesorno"]:checked');
+        const selected = document.querySelector('input[name="yesorno"]:checked'); // Get the selected radio button for encryption 1 or 0
         const encryptFile = selected.value;
-        console.log('EncryptFile: '+encryptFile);
+        console.log('EncryptFile: ' + encryptFile);
 
         const pKey = document.getElementById('pKey').value;
         console.log('Public Key: ' + pKey);
+        if (!isRSA2048(pKey) && encryptFile === '1') {
+            alert("Invalid Public Key \nMust be RSA-2048.");
+            // res.status(400).json({ error: "Provided public key must be RSA-2048." });
+            return;
+        }
 
         const desc = document.getElementById('desc').value;
         console.log('Description: ' + desc);
 
-        
+
 
         formData.append('file', file); //file
         formData.append('walletPK', walletAddress); // wallet address
@@ -76,5 +81,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// const forge = require('node-forge')
 
+function isRSA2048(publicKeyPem) {
+    try {
+        const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
+        const bitLength = publicKey.n.bitLength();  // n is the modulus
+        return bitLength === 2048;
+    } catch (err) {
+        console.error('Invalid public key:', err);
+        return false;
+    }
+}
 

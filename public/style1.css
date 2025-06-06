@@ -227,7 +227,7 @@ b {
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-bottom: 0.7em;
+    margin-bottom: 0.4em;
 }
 
 .projectbtn {
@@ -241,6 +241,15 @@ b {
     margin-right: 10px;
     /* Add margin on the right */
 }
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px; /* Optional: adds spacing between buttons */
+    margin-top: 1em;
+}
+
 
 
 .custom-file-upload {
@@ -311,4 +320,22 @@ b {
     width: 250px;
     margin: 0 auto;
     /* text-align: center; */
+}
+
+.owner-text {
+    display: block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    font-size: 0.8em;
+    margin-bottom: 0.5em;
+}
+
+.project-card p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+    margin: 0.4em 0;
+    margin-left: 0.4em;
 }

@@ -60,7 +60,7 @@ function showAlert() {
         "You can now view your file in the 'My Files' section. \n\n" +
         "Thank you for using our service!");
 
-    window.location.replace('/MyFiles'); // Redirect to home page
+    window.location.replace('/MyDatasets'); // Redirect to home page
 }
 
 // const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");

@@ -287,6 +287,7 @@ app.post('/api/processing', async (req, res) => {
                 console.log("Uploading to Pinata...");
                 console.log(result);
                 res.status(200).json(result);
+                // res.json({ "message": "Upload successful", "status": "ok" })
                 return
             }
 
@@ -323,17 +324,26 @@ app.get('/processing', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, 'public', 'processing.html'));
 })
 
+app.get('/MyDatasets', (req, res) => {
 
-app.get('/api/pinata', async (req, res) => {
+    res.status(200).sendFile(path.join(__dirname, 'public', 'MyFiles.html'));
+})
+
+app.get('/api/pinataMyFiles/:WalletAddress', async (req, res) => {
+
+    const walletAddress = req.params.WalletAddress;
 
     try {
-        const blob = new Blob([fs.readFileSync("./pew.txt")]);
-        const file = new File([blob], "pew.txt", { type: "text/plain" })
-        const result = await pinata.upload.private.file(file);
-        console.log(result)
-        res.status(200).json(result);
+        const files = await pinata.files.public
+        .list()
+        .keyvalues({
+			"WalletAddress": `${walletAddress}` // Filter file by wallet address
+		})
+        res.status(200).send(files);
+
     } catch (error) {
         console.log(error)
+        res.status(500).json({ error: 'Failed to fetch files from Pinata' });
     }
 })
 
@@ -348,6 +358,22 @@ app.get('/api/pinataFiles', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch files from Pinata' });
     }
 })
+
+app.get('/api/pinataFileDel/:id', async (req, res) => {
+
+    const fileId = req.params.id;
+
+    try {
+        // const files = await pinata.files.public.list()
+        const deletedFiles = await pinata.files.public.delete([fileId])
+        res.status(200).json(deletedFiles);
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ error: 'Failed to delete file from Pinata' });
+    }
+})
+
 
 async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePath, walletPK, desc) {
 

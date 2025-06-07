@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const pKey = document.getElementById('pKey').value;
         console.log('Public Key: ' + pKey);
-        if (!isRSA2048(pKey) && encryptFile === '1') {
+        if (encryptFile === '1' && !isRSA2048(pKey)) {
             alert("Invalid Public Key \nMust be RSA-2048.");
             // res.status(400).json({ error: "Provided public key must be RSA-2048." });
             return;

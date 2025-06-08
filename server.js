@@ -3,7 +3,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const forge = require('node-forge');
 const { spawn } = require('child_process');
-// const https = require('https');
+// const https = require('https'); //!!!
 const express = require("express");
 const path = require('path');
 // const mongoose = require('mongoose'); // DataBase
@@ -63,20 +63,6 @@ app.use(cors())
 
 //! Routes
 
-// app.use('/api/product', productRoute);
-
-// app.post('/api/upload', upload.single('file') , (req, res)=> {
-
-//     console.log(req.headers['content-type']);
-//     console.log(req.file);
-// res.send("File Upload Successfully")
-//     console.log(req.file.filename);
-//     // res.json(req.file)
-
-//     const inputPath = path.join(__dirname, 'uploads', req.file.filename);
-//     const outputPath = path.join(__dirname, 'outputs', `output_${req.file.filename}`);
-
-// })
 
 app.post('/api/upload', upload.single('file'), (req, res) => {
 
@@ -232,18 +218,14 @@ app.post('/api/processing', async (req, res) => {
             // Check if encryption is required
             if (encryptFile === '1') {
 
-                // if (!isRSA2048(pKey)) {
-                //     console.error("Invalid public key — must be RSA-2048.");
-                //     res.status(400).json({ error: "Provided public key must be RSA-2048." });
-                //     return;
-                // }
-                // Call the encryption function here
                 console.log('Encryption is required');
 
                 const filePath = outputPath; // anonymized file
                 const encryptedFilePath = path.join(__dirname, 'encryptedFile', `${fileName}.enc`); // encrypted file path
                 const encryptedKeyPath = path.join(__dirname, 'encryptedFile', 'encrypted_aes_key.bin'); // path to save encrypted key
                 const ivPath = path.join(__dirname, 'encryptedFile', 'iv.bin'); // path to save IV
+
+                //!!!! enc IV
 
                 const aesKey = crypto.randomBytes(32); // 256-bit AES key
                 const iv = crypto.randomBytes(16);     // Initialization vector
@@ -260,6 +242,8 @@ app.post('/api/processing', async (req, res) => {
                         // Convert public key and encrypt AES key using RSA
                         const pubKey = forge.pki.publicKeyFromPem(pKey);
                         // fs.writeFileSync("aes_key.bin", aesKey);
+
+                        //!! Encrypt the IV using RSA
 
                         const encrypted = pubKey.encrypt(aesKey.toString('binary'), 'RSAES-PKCS1-V1_5');
                         const encryptedKey = Buffer.from(encrypted, 'binary');
@@ -327,6 +311,11 @@ app.get('/processing', (req, res) => {
 app.get('/MyDatasets', (req, res) => {
 
     res.status(200).sendFile(path.join(__dirname, 'public', 'MyFiles.html'));
+})
+
+app.get('/blockchain', (req, res) => {
+
+    res.status(200).sendFile(path.join(__dirname, 'public', 'blockchain.html'));
 })
 
 app.get('/api/pinataMyFiles/:WalletAddress', async (req, res) => {
@@ -441,6 +430,9 @@ async function pinataUpload(fileName, outputPath, walletPK, desc) {
 
 function deleteFilesEnrypted() {
 
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Delete Output folder files !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // deleteFilesOutput()
+
     const directory = path.join(__dirname, 'encryptedFile');
 
     fs.readdirSync(directory).forEach(file => {
@@ -465,15 +457,6 @@ function deleteFilesOutput() {
     });
 
     console.log('All files deleted successfully from output folder');
-}
-
-// not used just to test
-async function uploadDirectory() {
-    const file1 = new File(["hello world!"], "hello.txt", { type: "text/plain" })
-    const file2 = new File(["hello world again!"], "hello2.txt", { type: "text/plain" })
-    const upload = await pinata.upload.public
-        .fileArray([file1, file2])
-        .name("my-directory") // Set the name of the directory in Pinata
 }
 
 

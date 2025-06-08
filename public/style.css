@@ -1,0 +1,116 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #0e1013;
+    color: #eaeaea;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    /* background: #1f2227; */
+    padding: 20px;
+    /* border-radius: 12px; */
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); */
+
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    border: 1px solid #917c56;
+}
+
+.container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+
+.block-info p {
+    margin: 10px 0;
+}
+
+#tx-list {
+    list-style: none;
+    padding: 0;
+}
+
+
+#tx-list li {
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #2a2d33;
+    border: 1px solid #3a3f47;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+#tx-list li span.label {
+    font-weight: 600;
+    color: #76c7ff;
+    margin-right: 4px;
+}
+
+#tx-list li span.address {
+    font-family: 'Courier New', monospace;
+    color: #d0d0d0;
+}
+
+#tx-list li span.hash {
+    color: #e39ff6;
+    font-family: 'Courier New', monospace;
+}
+
+#block-hash {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #e39ff6;
+    word-break: break-word;
+}
+
+#parent-hash {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #aaa;
+    word-break: break-word;
+}
+
+
+#tx-scrollbox {
+    max-height: 300px;
+    /* Adjust height */
+    overflow-y: auto;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    background: #2b2e36;
+}
+
+#tx-scrollbox::-webkit-scrollbar {
+    width: 8px;
+}
+
+#tx-scrollbox::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 4px;
+}
+
+

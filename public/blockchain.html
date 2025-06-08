@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mini Block Explorer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/main.css" />
+    <link rel="stylesheet" href="./style1.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="controls">
+            <button onclick="prevBlock()">⬅ Prev Block</button>
+            <span id="block-number">Block: -</span>
+            <button onclick="nextBlock()">Next Block ➡</button>
+        </div>
+
+        <div class="block-info">
+            <p><strong>Block Info:</strong> <span id="block-number"></span></p>
+            <p><strong>Block Hash:</strong> <span id="block-hash">-</span></p>
+            <p><strong>Previous Block Hash:</strong> <span id="parent-hash">-</span></p>
+
+            <p><strong>Timestamp:</strong> <span id="timestamp">-</span></p>
+            <p><strong>Transactions:</strong></p>
+
+            <div id="tx-scrollbox">
+                <ul id="tx-list"></ul>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="blockchain.js"></script>
+</body>
+
+</html>

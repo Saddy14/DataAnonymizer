@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const encryptFile = selected.value;
         console.log('EncryptFile: ' + encryptFile);
 
+        const selectedPublicView = document.querySelector('input[name="PublicView"]:checked'); // Get the selected radio button for public view
+        const PublicView = selectedPublicView.value;
+        console.log('PublicView: ' + PublicView);
+
         const pKey = document.getElementById('pKey').value;
         console.log('Public Key: ' + pKey);
         if (encryptFile === '1' && !isRSA2048(pKey)) {
@@ -62,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('encryptFile', encryptFile); // encryption option
         formData.append('pKey', pKey); // public key for encryption
         formData.append('desc', desc); // description
+        formData.append('PublicView', PublicView); // public view option
 
         try {
             const response = await fetch('/api/upload', {

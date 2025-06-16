@@ -211,7 +211,8 @@ b {
 
 
 .projectbtn,
-.projectbtn2 {
+.projectbtn2,
+.projectbtn3 {
     display: flex;
     /* Use flexbox */
     justify-content: center;
@@ -232,6 +233,7 @@ b {
 
 .projectbtn {
     margin-left: 10px;
+    margin-right: 10px;
     /* Ensure no extra margin on the left */
 }
 
@@ -240,14 +242,30 @@ b {
     /* Push the second button to the right */
     margin-right: 10px;
     /* Add margin on the right */
+    background-color: #dc3545;
+
 }
+
+.projectbtn3 {
+    margin-left: auto;
+    /* Push the second button to the right */
+    margin-right: 10px;
+    /* Add margin on the right */
+}
+
+
+
 
 .button-container {
     display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+}
+
+.button-row {
+    display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 10px; /* Optional: adds spacing between buttons */
-    margin-top: 1em;
+    gap: 10px;
 }
 
 

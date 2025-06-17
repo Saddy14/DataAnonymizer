@@ -1,7 +1,6 @@
-// const { response } = require("express");
 
 window.onload = () => {
-    // your code here
+    
     const uploadResult = JSON.parse(localStorage.getItem('uploadResult'));
     if (uploadResult) {
         console.log('Message:', uploadResult.message);
@@ -39,57 +38,26 @@ window.onload = () => {
                     .then(response => response.json())
                     .then(data => {
                         console.log(data);
+                        alert("Transaction was cancelled. The file has been removed successfully.");
+                        window.location.replace('/home'); // Redirect to home page
                     })
                 } else {
                     showAlert(); // Only show alert if successful
                 }
             });
-            // .then(() => { showAlert() })
-
     }
-
-    // loadFiles();
-    // callAddFile();
-
 
 };
 
 function showAlert() {
 
     alert("File Processing Successful! \n\n" +
-        "You can now view your file in the 'My Files' section. \n\n" +
+        "You can now view your file in the 'My Datasets' section. \n\n" +
         "Thank you for using our service!");
 
     window.location.replace('/MyDatasets'); // Redirect to home page
 }
 
-// const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
-// const signer = provider.getSigner(); 
-// const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-
-// async function loadFiles() {
-//     const files = await contract.getAllFiles();
-//     console.log(files);
-// }
-
-// async function callAddFile(name, cid, description, encryptedFile, publicView) {
-//     // MetaMask
-//     const provider = new ethers.providers.Web3Provider(window.ethereum);
-//     await provider.send("eth_requestAccounts", []);
-//     const signer = provider.getSigner();
-
-//     // Initialize contract
-//     const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
-
-//     // Send transaction to smart contract
-//     const tx = await contract.addFile(name, cid, description, encryptedFile, publicView);
-
-//     console.log("Transaction Hash:", tx.hash);
-//     console.log('File name:', name);
-
-//     await tx.wait(); // Wait for confirmation
-//     console.log("File added successfully!");
-// }
 
 async function callAddFile(name, cid, description, encryptedFile, publicView) {
     try {
@@ -118,13 +86,8 @@ async function callAddFile(name, cid, description, encryptedFile, publicView) {
         ) {
             alert("Transaction was rejected by the user.");
             return -1;
-            window.location.replace('/home'); // <- prevents falling into the generic alert
         }
-
-        // alert("An error occurred while sending the transaction.");
     }
-
-
 }
 
 

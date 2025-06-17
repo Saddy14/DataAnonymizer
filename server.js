@@ -3,7 +3,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const forge = require('node-forge');
 const { spawn } = require('child_process');
-// const https = require('https'); //!!!
+const https = require('https'); //!!!
 const express = require("express");
 const path = require('path');
 // const mongoose = require('mongoose'); // DataBase
@@ -16,7 +16,6 @@ const storage = multer.diskStorage({
         cb(null, './uploads')
     },
     filename: function (req, file, cb) {
-        // const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
         cb(null, Date.now() + '--' + file.originalname)
     }
 })
@@ -34,15 +33,15 @@ const pinata = new PinataSDK({
 const app = express();
 
 //? Read SSL certificate files
-// const privateKey = fs.readFileSync('ssl/private.key', 'utf8');
-// const certificate = fs.readFileSync('ssl/certificate.crt', 'utf8');
+const privateKey = fs.readFileSync('certs/private.key', 'utf8');
+const certificate = fs.readFileSync('certs/certificate.crt', 'utf8');
 
 // Set up SSL options
-// const credentials = {
-//     key: privateKey,
-//     cert: certificate,
-//     passphrase: 'hello'
-// };
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    passphrase: 'hello'
+};
 
 
 
@@ -420,21 +419,14 @@ function deleteFilesOutput() {
 
 
 // Start the server
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+// app.listen(3000, () => {
+//     console.log('Server is running on http://localhost:3000');
+// });
+
+//! Start the HTTPS server
+https.createServer(credentials, app).listen(3000, () => {
+    console.log('HTTPS server running on https://localhost:3000');
 });
 
 
-//! Start the HTTPS server
-// mongoose.connect(MONGO_URL)
-//     .then(() => {
-//         console.log('Connected to MongoDB');
-
-//         https.createServer(credentials, app).listen(443, () => {
-//             console.log('HTTPS server is running on https://localhost:443');
-//         });
-
-//     }).catch((error) => {
-//         console.log(error);
-//     })
 

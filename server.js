@@ -278,7 +278,7 @@ app.get('/api/pinataFileDel/:id', async (req, res) => {
     try {
         // const files = await pinata.files.public.list()
         const deletedFiles = await pinata.files.public.delete([fileId])
-        res.status(200).json(deletedFiles);
+        res.status(200).json({deletedFiles, success: true,});
 
     } catch (error) {
         console.log(error)

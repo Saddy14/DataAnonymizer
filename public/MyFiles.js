@@ -28,11 +28,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                             <p >Owner: ${file.keyvalues?.WalletAddress}</p>
                         <div class="button-container">
                             <div class="button-row">
-                                <button onclick="window.open('https://purple-wrong-ferret-861.mypinata.cloud/ipfs/${file.cid}', '_blank')" class="projectbtn">Share Data</button>
-                                <button class="projectbtn2" onclick="makePublic('${file.id}', ${file.keyvalues?.PublicView})">Make Publicly Visible</button>
+                                <button onclick="showTimedAlert('${file.cid}')" class="projectbtn">Share Dataset</button>
+                                <button class="projectbtn2" onclick="makePublic('${file.id}', ${file.keyvalues?.PublicView})">Make Visibility Public</button>
                             </div>
                             <div class="button-row">
-                                <button class="projectbtn3" onclick="makePrivate('${file.id}', ${file.keyvalues?.PublicView})">Make Privately Visible</button>
+                                <button class="projectbtn3" onclick="makePrivate('${file.id}', ${file.keyvalues?.PublicView})">Make Visibility Private</button>
+                            </div>
+                            <div class="button-row1">
+                                <button class="projectbtn4" onclick="deleteFile('${file.id}')">Delete Dataset</button>
+                                
                             </div>
                         </div>`;
 
@@ -71,7 +75,6 @@ function makePublic(id, PublicView) {
                 alert("An error occurred while making the dataset public.");
             });
     }
-
 }
 
 function makePrivate(id, PublicView) {
@@ -101,5 +104,53 @@ function makePrivate(id, PublicView) {
                 alert("An error occurred while making the dataset private.");
             });
     }
+}
+
+function deleteFile(id) {
+
+    console.log("Delete function called with id:", id);
+
+    if (confirm("Are you sure you want to delete this dataset? This action cannot be undone.")) {
+        fetch(`/api/pinataFileDel/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Dataset deleted successfully.");
+                    window.location.reload(); // Reload the page to reflect changes
+                } else {
+                    alert("Failed to delete dataset.");
+                }
+            })
+            .catch(error => {
+                console.error("Error deleting dataset:", error);
+                alert("An error occurred while deleting the dataset.");
+            });
+    }
+}
+
+async function copyText(cid) {
+    try {
+        // Use the Clipboard API to copy the passed text to the clipboard
+        await navigator.clipboard.writeText(`https://purple-wrong-ferret-861.mypinata.cloud/ipfs/${cid}`);
+
+    } catch (err) {
+        console.error("Failed to copy text: ", err);
+    }
+}
+
+function showTimedAlert(cid) {
+
+    copyText(cid); // Call copyText function with the id
+
+    const alertBox = document.getElementById("timedAlert");
+
+    // Show the alert box
+    alertBox.style.display = "block";
+
+    // Hide the alert box after 1 second (1000ms)
+    setTimeout(() => {
+        alertBox.style.display = "none";
+        window.open(`https://purple-wrong-ferret-861.mypinata.cloud/ipfs/${cid}`, '_blank');
+    }, 1000); // 1 seconds
 
 }

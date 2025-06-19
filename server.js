@@ -32,7 +32,7 @@ const pinata = new PinataSDK({
 // const errorMiddleware = require('./middleware/errorMiddleware');
 const app = express();
 
-//? Read SSL certificate files
+//? Read certificate files
 const privateKey = fs.readFileSync('certs/private.key', 'utf8');
 const certificate = fs.readFileSync('certs/certificate.crt', 'utf8');
 

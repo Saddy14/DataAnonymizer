@@ -41,7 +41,7 @@ window.onload = () => {
                         alert("Transaction was cancelled. The file has been removed successfully.");
                         window.location.replace('/home'); // Redirect to home page
                     })
-                } else {
+                } else if (result === 1) {
                     showAlert(); // Only show alert if successful
                 }
             });
@@ -49,14 +49,25 @@ window.onload = () => {
 
 };
 
-function showAlert() {
+// function showAlert() {
 
+//     alert("File Processing Successful! \n\n" +
+//         "You can now view your file in the 'My Datasets' section. \n\n" +
+//         "Thank you for using our service!");
+
+//     window.location.replace('/MyDatasets'); // Redirect to home page
+// }
+
+function showAlert() {
     alert("File Processing Successful! \n\n" +
         "You can now view your file in the 'My Datasets' section. \n\n" +
         "Thank you for using our service!");
 
-    window.location.replace('/MyDatasets'); // Redirect to home page
+    setTimeout(function() {
+        window.location.replace('/MyDatasets');
+    }, 4000);
 }
+
 
 
 async function callAddFile(name, cid, description, encryptedFile, publicView) {
@@ -75,6 +86,8 @@ async function callAddFile(name, cid, description, encryptedFile, publicView) {
         await tx.wait();
         console.log("File added successfully!");
 
+        return 1;
+
     } catch (err) {
         console.error("Transaction failed:", err);
 
@@ -84,7 +97,7 @@ async function callAddFile(name, cid, description, encryptedFile, publicView) {
             err.message?.includes("User denied transaction") ||
             err.message?.includes("user rejected transaction")
         ) {
-            alert("Transaction was rejected by the user.");
+            // alert("Transaction was rejected by the user.");
             return -1;
         }
     }

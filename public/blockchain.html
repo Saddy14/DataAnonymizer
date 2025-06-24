@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Mini Block Explorer</title>
+    <title>Blocks | Data Anonymizer</title>
+    <link rel="shortcut icon" href="../images/icon.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="../assets/css/main.css" />
     <link rel="stylesheet" href="./style1.css">
@@ -11,6 +12,30 @@
 </head>
 
 <body>
+        <!-- Header -->
+        <header id="header">
+            <!-- Navigation Links -->
+            <ul class="navbar">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/uploadfile">Upload File</a></li>
+                <li><a href="/MyDatasets">My Datasets</a></li>
+    
+                <li class="dropdown">
+                    <a href="javascript:void(0)">Blocks & More</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/blockchain">View Blocks</a></li>
+                        <li><a href="/">FAQ Algorithm</a></li>
+                        <li><a href="/blockdetails">Block Details</a></li>
+                        <li><a href="/blockdetails">Block Details</a></li>
+                        <li><a href="/blockdetails">Block Details</a></li>
+                    </ul>
+                </li>
+            </ul>
+    
+            <!-- <h2 style="margin: 0%;">Research Data Anonymizer</h2> -->
+            <!-- <p style="margin: 0%;">With Blockchain Technology</p> -->
+    
+        </header>
     <div class="container">
         <div class="controls">
             <button onclick="prevBlock()">⬅ Prev Block</button>
@@ -33,6 +58,19 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer id="footer">
+        <ul class="icons">
+
+            <li><a href="https://github.com/Saddy14" class="icon brands fa-github"><span class="label">GitHub</span></a>
+            </li>
+        </ul>
+        <ul class="copyright">
+            <li>&copy; Saddy14</li>
+            <li>Credits: <a href="https://github.com/Saddy14">Sadman Zulfiquer</a></li>
+        </ul>
+    </footer>
+    <!-- Scripts -->
     <script src="../assets/js/main.js"></script>
     <script src="blockchain.js"></script>
 </body>

@@ -2,13 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Loading...</title>
-  <link rel="stylesheet" href="loading.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timed Alert Example</title>
+  <style>
+    #timedAlert {
+      display: none;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 20px;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 5px;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body>
-  <div class="loader-container">
-    <div class="spinner"></div>
-    <p>Processing, please wait...</p>
-  </div>
+
+<button onclick="showTimedAlert()">Show Timed Alert</button>
+<div id="timedAlert">This is a timed alert!</div>
+
+<script>
+  function showTimedAlert() {
+    const alertBox = document.getElementById("timedAlert");
+
+    // Show the alert box
+    alertBox.style.display = "block";
+
+    // Hide the alert box after 5 seconds (5000ms)
+    setTimeout(() => {
+      alertBox.style.display = "none";
+    }, 5000); // 5 seconds
+  }
+</script>
+
 </body>
 </html>

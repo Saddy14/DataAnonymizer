@@ -237,6 +237,11 @@ app.get('/blockchain', (req, res) => {
     res.status(200).sendFile(path.join(__dirname, 'public', 'blockchain.html'));
 })
 
+app.get('/faq', (req, res) => {
+
+    res.status(200).sendFile(path.join(__dirname, 'public', 'FAQ.html'));
+})
+
 app.get('/api/pinataMyFiles/:WalletAddress', async (req, res) => {
 
     const walletAddress = req.params.WalletAddress;

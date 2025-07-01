@@ -1,6 +1,4 @@
-# Blockchain Based: Research Data Anonymizer
-
-
+# FYP Blockchain Based: Research Data Anonymizer
 
 
 ## Decrypt the AES key using RSA private key
@@ -17,4 +15,11 @@
 - MetaMask
 - Ganache
 - PinataIPFS
-- OpenSSL
+- (OpenSSL)
+
+## Encryption
+- RSA 2048
+- AES 256
+
+## UI
+![Block data page](<Screenshot 2025-06-25 141441.png>) ![MyDatasets page](<Screenshot 2025-06-25 135833.png>) ![Upload dataset page](<Screenshot 2025-06-25 135754.png>) ![Home page](<Screenshot 2025-06-25 135715.png>) ![Landing page](<Screenshot 2025-06-25 135421.png>)

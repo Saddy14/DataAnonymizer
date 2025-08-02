@@ -23,10 +23,7 @@
                 <a href="javascript:void(0)">Blocks & More</a>
                 <ul class="dropdown-content">
                     <li><a href="/blockchain">View Blocks</a></li>
-                    <li><a href="/">FAQ Algorithm</a></li>
-                    <li><a href="/blockdetails">Block Details</a></li>
-                    <li><a href="/blockdetails">Block Details</a></li>
-                    <li><a href="/blockdetails">Block Details</a></li>
+                    <li><a href="/faq">FAQ Algorithm</a></li>
                 </ul>
             </li>
         </ul>
@@ -62,7 +59,7 @@
                     <label for="No">No</label><br>
                     
                     <span>Public Key</span>
-                    <input type="text" id="pKey" placeholder="Your RSA Public Key"> <br>
+                    <input type="text" id="pKey" placeholder="Your RSA 2048 Public Key"> <br>
 
                     <span>Short Description</span>
                     <input type="text" id="desc" placeholder="Short Description" required maxlength="250"> <br>
@@ -102,6 +99,8 @@
 
     <!-- Scripts -->
     <script src="../assets/js/main.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script> -->
+    <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/node-forge@1.3.1/dist/forge.min.js"></script>
     <script src="uploadFile.js"></script>
     <script>

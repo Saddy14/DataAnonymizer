@@ -33,6 +33,9 @@ async function loadBlock(blockNumber) {
             txList.appendChild(li);
         });
     }
+
+    await pew(blockNumber);
+
 }
 
 async function prevBlock() {
@@ -47,5 +50,19 @@ async function nextBlock() {
     if (currentBlock < latest) {
         currentBlock++;
         loadBlock(currentBlock);
+    }
+}
+
+
+async function pew(blockNumber) {
+    const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, provider);
+    const events = await contract.queryFilter(contract.filters.FileAdded(), blockNumber, blockNumber);
+    
+    for (const event of events) {
+        const txList = document.getElementById("tx-list");
+        const li = document.createElement("li");
+        // li.classList.add("file-item");
+        li.innerHTML = `<span class="label">📄 File:</span> ${event.args.name}<br>`;
+        txList.appendChild(li);
     }
 }

@@ -114,6 +114,8 @@ def anonymize_sensitive_fields(df):
     return df
 
 anonymized_df = anonymize_sensitive_fields(df)
-anonymized_df.to_csv(output_path, index=False)
+shuffled_df = anonymized_df.sample(frac=1).reset_index(drop=True)
+# anonymized_df.to_csv(output_path, index=False)
+shuffled_df.to_csv(output_path, index=False)
 
 print(f"Processed file saved to {output_path}")

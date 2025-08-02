@@ -35,8 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        // const walletAddress = accounts[0];
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+        // const signer = provider.getSigner();
+
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const walletAddress = accounts[0];
+        const walletAddress = ethers.utils.getAddress(accounts[0]); // checksummed format
 
         const formData = new FormData();
 

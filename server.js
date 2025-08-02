@@ -283,7 +283,7 @@ app.get('/api/pinataFileDel/:id', async (req, res) => {
     try {
         // const files = await pinata.files.public.list()
         const deletedFiles = await pinata.files.public.delete([fileId])
-        res.status(200).json({deletedFiles, success: true,});
+        res.status(200).json({ deletedFiles, success: true, });
 
     } catch (error) {
         console.log(error)
@@ -298,7 +298,7 @@ app.get('/api/pinataFilePublic/:id', async (req, res) => {
         const update = await pinata.files.public.update({
             id: id, // Target File ID
             keyvalues: {
-                "PublicView": "1", 
+                "PublicView": "1",
             }
         })
         res.status(200).json({ success: true, message: 'File is now publicly visible' });
@@ -316,7 +316,7 @@ app.get('/api/pinataFilePrivate/:id', async (req, res) => {
         const update = await pinata.files.public.update({
             id: id, // Target File ID
             keyvalues: {
-                "PublicView": "0", 
+                "PublicView": "0",
             }
         })
         res.status(200).json({ success: true, message: 'File is now privately visible' });
@@ -342,7 +342,10 @@ async function pinataUploadEncrypted(encryptedKey, iv, fileName, encryptedFilePa
         const encryptedKeyFile = new File([encryptedKeyBlob], "encrypted_aes_key.bin", { type: "application/octet-stream" });
         const ivFile = new File([ivBlob], "iv.bin", { type: "application/octet-stream" });
 
-        const upload = await pinata.upload.public.fileArray([file, encryptedKeyFile, ivFile])
+        const pythonBlob = new Blob([fs.readFileSync("decryption/info.py")], { type: "text/x-python" });
+        const pythonFile = new File([pythonBlob], "info.py", { type: "text/x-python" });
+
+        const upload = await pinata.upload.public.fileArray([file, encryptedKeyFile, ivFile, pythonFile])
             .name(fileName) // Set the name of the folder in Pinata
             .keyvalues({
                 "WalletAddress": `${walletPK}`, // Example key-value pair
@@ -380,7 +383,7 @@ async function pinataUpload(fileName, outputPath, walletPK, desc, PublicView) {
             })
         // .then(response => {
         console.log("Upload successful:", upload);
-        deleteFilesOutput(); // Delete files after upload
+        // deleteFilesOutput(); // Delete files after upload
         // console.log(object);
         return upload;
         // })

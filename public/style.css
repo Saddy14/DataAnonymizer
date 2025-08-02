@@ -7,6 +7,7 @@ body {
 
 .container {
     max-width: 700px;
+    /* min-height: auto; */
     margin: auto;
     /* background: #1f2227; */
     padding: 20px;
@@ -97,11 +98,11 @@ h1 {
     max-height: 300px;
     /* Adjust height */
     overflow-y: auto;
-    border: 1px solid #444;
+    /* border: 1px solid #444; */
     border-radius: 8px;
     padding: 10px;
     margin-top: 10px;
-    background: #2b2e36;
+    /* background: #2b2e36; */
 }
 
 #tx-scrollbox::-webkit-scrollbar {

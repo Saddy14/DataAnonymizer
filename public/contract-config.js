@@ -1,4 +1,4 @@
-const CONTRACT_ADDRESS = "0x683aDD0c2B14D3D97863e706DA4ACDD6994c8edD";
+const CONTRACT_ADDRESS = "0xD96d949660faa3d90ef0baD300f4572cFB3FB404";
 
 const ABI = [
 	{
@@ -33,6 +33,43 @@ const ABI = [
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "fileId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "cid",
+				"type": "string"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "timestamp",
+				"type": "uint256"
+			}
+		],
+		"name": "FileAdded",
+		"type": "event"
 	},
 	{
 		"inputs": [],

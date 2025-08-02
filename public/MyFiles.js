@@ -2,8 +2,11 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+    // const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    // const walletAddress = accounts[0];
+
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const walletAddress = accounts[0];
+    const walletAddress = ethers.utils.getAddress(accounts[0]); // checksummed format
 
     fetch(`/api/pinataMyFiles/${walletAddress}`)
         .then(response => response.json())

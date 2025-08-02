@@ -1,0 +1,54 @@
+ransdoam 
+
+<div class="project-card">
+                    <h3>Smart Home Garden</h3>
+                    <p>Grow your own food with this AI-powered indoor garden system.</p>
+                    <small> <b>Wallet Address: xxxx-xxxx-xxxx</b> </small>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 40%;"></div>
+                    </div>
+                    <!-- <p class="funding-info">ETH 8,000 raised of ETH 20,000 goal</p> -->
+                    <div class="button-container">
+                        <button class="projectbtn">Download Data</button>
+                        <button class="projectbtn2">More Info</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Educational VR Platform</h3>
+                    <p>Revolutionize learning with immersive virtual reality experiences.</p>
+                    <small> <b>Wallet Address: xxxx-xxxx-xxxx</b> </small>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 90%;"></div>
+                    </div>
+                    <!-- <p class="funding-info">ETH 45,000 raised of ETH 50,000 goal</p> -->
+                    <div class="button-container">
+                        <button class="projectbtn">Download Data</button>
+                        <button class="projectbtn2">More Info</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Eco-friendly Water Bottle</h3>
+                    <p>A revolutionary water bottle that's good for you and the planet.</p>
+                    <small> <b>Wallet Address: xxxx-xxxx-xxxx</b> </small>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                    <!-- <p class="funding-info">ETH 15,000 raised of ETH 20,000 goal</p> -->
+                    <div class="button-container">
+                        <button class="projectbtn">Download Data</button>
+                        <button class="projectbtn2">More Info</button>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Eco-friendly Water Bottle</h3>
+                    <p>A revolutionary water bottle that's good for you and the planet.</p>
+                    <small> <b>Wallet Address: xxxx-xxxx-xxxx</b> </small>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 75%;"></div>
+                    </div>
+                    <!-- <p class="funding-info">ETH 15,000 raised of ETH 20,000 goal</p> -->
+                    <div class="button-container">
+                        <button class="projectbtn">Download Data</button>
+                        <button class="projectbtn2">More Info</button>
+                    </div>
+                </div>
